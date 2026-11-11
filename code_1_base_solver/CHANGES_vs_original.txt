@@ -1,0 +1,32 @@
+--- original: code_2_with_MHD_changed.cpp
++++ final: code1_base_solver.cpp
+@@ -200,7 +200,7 @@
+     // force evaluation for bouyancy driven convection
+    // force[j][i][k]=(3.0*w[k]*gbeta*(T[j][i]-Tref)*cy[k]*rho[j][i]); 
+     //  force[j][i][k]=(3.0*w[k]*gbetaT*cy[k]*rho[j][i])*((T[j][i]-Tref)+(C[j][i]-Cref)*N);    
+-     force[j][i][k]=(3.0*w[k]*gbetaT*cy[k]*rho[j][i])*(((T[j][i]-Tref)+(C[j][i]-Cref)*N) - A*v[j][i]);
++     force[j][i][k]=(3.0*w[k]*cy[k]*rho[j][i])*(gbetaT*((T[j][i]-Tref)+(C[j][i]-Cref)*N) - A*v[j][i]);
+ 
+  //----------------------------------------------------------- 
+   if (i==0){
+@@ -956,9 +956,6 @@
+       
+       for (i=0; i<=nx; i++)
+        {
+-       h[0][i][2]=Ch*(w[2]+w[4])-h[0][i][4];
+-        h[0][i][5]=Ch*(w[5]+w[7])-h[0][i][7];
+-         h[0][i][6]=Ch*(w[6]+w[8])-h[0][i][8];
+          }
+      // No mass transfer from north wall
+     for (i=0; i<=nx; i++)
+@@ -966,7 +963,9 @@
+         for (k=0; k<=8; k++)
+         {
+               
+-        h[ny][i][k]=h[ny-1][i][k];    
++        h[ny][i][k]=h[ny-1][i][k];
++              
++        h[0][i][k]=h[1][i][k];    
+         }       
+           
+     }       
