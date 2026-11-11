@@ -11,10 +11,8 @@ This repository holds the solver codes, simulation output, plotting scripts and 
 README.md
 code_1_base_solver/
     code1_base_solver.cpp                 Code 1: base solver, one case per compilation
-    CHANGES_vs_original.txt               lines changed relative to the original file
 code_2_targeted_Ra_Ha_study/
     code2_targeted_Ra_Ha_study.cpp        Code 2: final nine-run Ra-Ha study
-    CHANGES_vs_original.txt               lines changed relative to the original file
 results_csv/
     summary_results_Ra_Ha_study.csv       Nu, Sh and iterations of the nine runs
     grid_csv/                             one CSV per run (columns i, j, T, C, u, v)
@@ -57,16 +55,7 @@ python plot_fields.py ../results_csv/grid_csv ../results_plots/field_plots
 python plot_analysis.py ../results_csv/grid_csv ../results_plots/regenerated --summary ../results_csv/summary_results_Ra_Ha_study.csv
 ```
 
-## 4. Changes made to the original solver (Codes 1 and 2)
-
-Two changes only; all other lines are unchanged (full list in each `CHANGES_vs_original.txt`).
-
-1. Lorentz damping term. The magnetic term A*v was inside the bracket multiplied by `gbetaT`; it is now outside the buoyancy multiplier.
-   - before: `force = (3*w[k]*gbetaT*cy[k]*rho) * ((T-Tref) + (C-Cref)*N - A*v)`
-   - after: `force = (3*w[k]*cy[k]*rho) * (gbetaT*((T-Tref) + (C-Cref)*N) - A*v)`
-2. Bottom-wall concentration condition. The three fixed-concentration lines on the bottom wall (`h[0][i][2]`, `h[0][i][5]`, `h[0][i][6]`) were replaced by the zero-gradient copy `h[0][i][k] = h[1][i][k]`, as on the top wall.
-
-## 5. Final results (Pr = 0.054, Le = 1, N = 0)
+## 4. Final results (Pr = 0.054, Le = 1, N = 0)
 
 | Ra | Ha = 0 | Ha = 50 | Ha = 100 |
 |---|---|---|---|
@@ -76,10 +65,7 @@ Two changes only; all other lines are unchanged (full list in each `CHANGES_vs_o
 
 Sherwood numbers equal the Nusselt numbers to within about 0.1% (see the summary CSV).
 
-## 6. Provenance of the data
+## 5. Provenance of the data
 
 The nine grid files in `results_csv/grid_csv/` were generated with a restructured implementation of the same algorithm and equations as Code 2. Code 2 in this repository was checked against it for the case Ra = 1e3, Ha = 50: both gave 24 981 iterations and Nu = 1.00548 (1.005484), with the fields agreeing to CSV rounding. Running Code 2 as described above regenerates the nine cases.
 
-## 7. Notes
-
-The solver originates from the supervisor's research group; do not redistribute it without permission. The project report and presentation are submitted separately.
